@@ -59,3 +59,40 @@ wardrobe = get_example_wardrobe()
 3. Build and test each tool individually before connecting them through your planning loop.
 
 Your implementation files go in this same directory. There's no required file structure for your agent code — organize it however makes sense for your design.
+
+## Testing Individual Tool Failure 
+1. Trigger `search_listings` returning zero results
+   - Input: 
+    ``` 
+    python -c "from tools import search_listings; print(search_listings('designer ballgown', size='XXS', max_price=5))"
+    ```
+   - Output: 
+   
+   ![alt text](image-4.png)
+
+2. Trigger `suggest_outfit ` returning empty wardrobe
+   - Input: 
+    ``` 
+    python -c "
+    from tools import search_listings, suggest_outfit
+    from utils.data_loader import get_example_wardrobe, get_empty_wardrobe
+    results = search_listings('vintage graphic tee', size=None, max_price=50)
+    print(suggest_outfit(results[0], get_empty_wardrobe()))
+    "
+    ```
+   - Output: 
+   
+    ![alt text](image-2.png)
+
+3. Trigger `create_fit_card  ` with empty outfit string:
+   - Input: 
+    ``` 
+    python -c "
+    from tools import search_listings, create_fit_card
+    results = search_listings('vintage graphic tee', size=None, max_price=50)
+    print(create_fit_card('', results[0]))
+    "
+    ```
+   - Output: 
+   
+    ![alt text](image-3.png)
